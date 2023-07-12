@@ -19,7 +19,7 @@ function App() {
   }
 
   return (
-    <>
+    <div className="wrapper">
       <Header />
       <Routes>
         <Route path='/' element={<Main productList={productList} />} />
@@ -27,7 +27,7 @@ function App() {
         {/* <Route path='/bookmark' element={} /> */}
       </Routes>
       <Footer />
-    </>
+    </div>
   );
 }
 
