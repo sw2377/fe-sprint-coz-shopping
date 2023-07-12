@@ -1,10 +1,14 @@
-import './App.css';
+import { Route, Routes } from 'react-router-dom';
+import './index.css';
+import Main from "./pages/Main";
 
 function App() {
   return (
-    <div>
-      REACT PROJECT START
-    </div>
+    <Routes>
+      <Route path='/' element={<Main />} />
+      {/* <Route path='/products/list' element={} /> */}
+      {/* <Route path='/bookmark' element={} /> */}
+    </Routes>
   );
 }
 
