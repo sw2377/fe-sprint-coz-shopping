@@ -4,6 +4,7 @@
 :root {
   --color-black: #000;
   --color-white: #fff;
+  --color-grey: #888;
   --color-line: #e5e5e5;
 }
 
@@ -35,6 +36,7 @@ ul li {
 }
 
 a {
+  display: inline-block;
   text-decoration: none;
   color: var(--color-black);
 }
