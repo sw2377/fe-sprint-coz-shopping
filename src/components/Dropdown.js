@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { ReactComponent as ProductList } from '../assets/productListIcon.svg';
-import { ReactComponent as Bookmark } from '../assets/bookmarkIcon.svg';
+import { ReactComponent as ProductList } from '../assets/icons/productListIcon.svg';
+import { ReactComponent as Bookmark } from '../assets/icons/bookmarkIcon.svg';
 import './Dropdown.css';
 
 function Dropdown() {

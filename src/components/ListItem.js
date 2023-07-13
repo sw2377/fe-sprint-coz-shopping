@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './ListItem.css';
-import { ReactComponent as Bookmark } from '../assets/bookmarkIcon.svg';
+import { ReactComponent as Bookmark } from '../assets/icons/bookmarkIcon.svg';
 
 function ListItem(list) {
   const [bookmark, setBookmark] = useState(false);

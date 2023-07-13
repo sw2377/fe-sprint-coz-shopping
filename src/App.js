@@ -4,6 +4,7 @@ import './index.css';
 import Main from "./pages/Main";
 import Header from './components/Header';
 import Footer from './components/Footer';
+import ProductList from './pages/ProductList';
 
 function App() {
   const [productList, setProductList] = useState([])
@@ -23,7 +24,7 @@ function App() {
       <Header />
       <Routes>
         <Route path='/' element={<Main productList={productList} />} />
-        {/* <Route path='/products/list' element={} /> */}
+        <Route path='/products/list' element={<ProductList />} />
         {/* <Route path='/bookmark' element={} /> */}
       </Routes>
       <Footer />

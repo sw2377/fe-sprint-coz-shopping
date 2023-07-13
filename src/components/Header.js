@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ReactComponent as Logo } from '../assets/logo.svg';
-import { ReactComponent as Menubar } from '../assets/menubar.svg';
+import { ReactComponent as Menubar } from '../assets/icons/menubar.svg';
 import Dropdown from './Dropdown';
 import './Header.css';
 
