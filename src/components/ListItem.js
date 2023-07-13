@@ -2,11 +2,17 @@ import { useState } from 'react';
 import './ListItem.css';
 import { ReactComponent as Bookmark } from '../assets/icons/bookmarkIcon.svg';
 
-function ListItem(list) {
+function ListItem( { openModal, ...list} ) {
+  
   const [bookmark, setBookmark] = useState(false);
 
+  const openModalHandler = ( image, brandImg, title, brandName ) => {
+    // console.log("🚀 OPEN MODAL", image, brandImg, title, brandName )
+    openModal(image, brandImg, title, brandName);
+  }
+
   return (
-    <li>
+    <li onClick={() => openModalHandler(list.image_url, list.brand_image_url, list.title, list.brand_name)}>
       <div 
         className="img" 
         style={{ backgroundImage: list.type === "Brand" ? `url("${list.brand_image_url}")` : `url("${list.image_url}")` }}
