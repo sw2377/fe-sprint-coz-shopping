@@ -51,5 +51,5 @@ img {
 main {
   padding: 0 76px;
 
-  border: 1px solid seagreen
+  border: 1px dotted lightgrey;
 }
