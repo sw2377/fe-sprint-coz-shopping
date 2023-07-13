@@ -7,7 +7,7 @@ import filterBrandImg from '../assets/images/brand.png';
 
 function Filter() {
   
-  const [selected, setSelected] = useState(false);
+  const [selected, setSelected] = useState(1);
 
   const filteredList = [
     {
