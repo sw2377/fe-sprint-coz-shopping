@@ -1,0 +1,20 @@
+main {
+  margin: 24px 0;
+}
+
+section + section {
+  margin-top: 12px;
+}
+
+section h2 {
+  margin-bottom: 12px;
+  font-size: 2.4rem;
+  font-weight: 600;
+}
+
+section ul {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+

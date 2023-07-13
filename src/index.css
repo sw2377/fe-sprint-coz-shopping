@@ -1,10 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 /* variables */
 :root {
   --color-black: #000;
   --color-white: #fff;
   --color-grey: #888;
+  --color-point: #452CDD;
   --color-line: #e5e5e5;
 }
 
@@ -23,6 +24,7 @@ html {
 body {
   font-family: 'Inter', sans-serif;
   font-size: 1.6rem;
+  font-weight: 400;
   color: var(--color-black);
 }
 
@@ -39,4 +41,13 @@ a {
   display: inline-block;
   text-decoration: none;
   color: var(--color-black);
+}
+
+img {
+  width: 100%;
+}
+
+/* common */
+main {
+  padding: 0 76px;
 }
