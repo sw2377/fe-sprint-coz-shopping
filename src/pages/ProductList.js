@@ -13,8 +13,7 @@ function ProductList() {
     name: "", 
     image: ""
   })
-
-  // TODO:: API 호출 App.js 랑 통합가능?
+  
   const [productList, setProductList] = useState([]);
   // console.log("🚀 productList", productList);
 
