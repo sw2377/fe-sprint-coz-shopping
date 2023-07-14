@@ -38,7 +38,7 @@ function Modal({ modalData, closeModal }) {
                 fill="#DFDFDF"
               />
             </div>
-            <div class="title">{modalData.name}</div>
+            <div className="title">{modalData.name}</div>
           </div>
           <div className="close_btn" onClick={() => closeModal()} >
             <Close />
