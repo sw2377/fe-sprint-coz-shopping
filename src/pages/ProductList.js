@@ -1,14 +1,17 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { createPortal } from "react-dom";
+import useFetch from "../hooks/useFetch";
 import ListItem from "../components/ListItem";
 import Filter from "../components/Filter";
-import "./ProductList.css";
 import Modal from "../components/Modal";
+import "./ProductList.css";
 
-function ProductList({ productList, bookmark, setBookmark }) {
+function ProductList() {
+
+  const products = useFetch("http://cozshopping.codestates-seb.link/api/v1/products");
 
   // filter
-  const [filteredList, setFilteredList] = useState(productList);
+  const [filteredList, setFilteredList] = useState(products);
   const [type, setType] = useState("All");
 
   // Modal
@@ -29,44 +32,43 @@ function ProductList({ productList, bookmark, setBookmark }) {
 
   useEffect(() => {
     // console.log("USE EFFECT 1. productList");
-    setFilteredList(productList)
-  }, [productList])
+    setFilteredList(products);
+  }, [products]);
 
   useEffect(() => {
     // console.log("USE EFFECT 2. filteredList");
     setCurrentProducts(filteredList.slice(0, 10 * page));
-  }, [filteredList])
+  }, [filteredList]);
 
   useEffect(() => {
     // console.log("USE EFFECT 3. TYPE");
     getProductList();
-  }, [type])
-
+  }, [type]);
 
   // filter
   const getProductList = () => {
-    setFilteredList(productList);
-    
+    setFilteredList(products);
+
     if (type === "All") {
       // console.log("👀 카테고리 All");
-      setFilteredList(productList);
+      setFilteredList(products);
       setCurrentProducts(filteredList.slice(0, 10 * page));
     }
-  
+
     if (type !== "All") {
       // console.log("👀 카테고리 All 아님");
       // console.log("🚀 currentProducts", page, currentProducts );
-      const filteredData = productList.filter((list) => list.type === type);
+      const filteredData = products.filter((list) => list.type === type);
       // console.log("🛰️ filteredData", filteredData );
       setPage(1);
       setFilteredList(filteredData);
       setCurrentProducts(filteredList.slice(0, 10 * page));
       // console.log("🚀 currentProducts", page, currentProducts );
     }
-  
+
     setIsLoading(false);
-  }
-  
+  };
+
   const ClickFilterHandler = (type) => {
     // console.log("🛰️ typeTest", type)
     setType(type);
@@ -129,22 +131,21 @@ function ProductList({ productList, bookmark, setBookmark }) {
   //   setBookmark(bookmarkData);
   // }
 
-
   return (
     <>
       <main>
         <Filter onFilter={ClickFilterHandler} />
         <section>
           <ul className="listItem">
-            { currentProducts.map((list) => (
-                <ListItem
-                  key={list.id}
-                  {...list}
-                  openModal={openModalHandler}
-                  // addBookmark={addBookmarkHandler}
-                  // removeBookmark={removeBookmarkHandler}
-                />
-              )) }
+            {currentProducts.map((list) => (
+              <ListItem
+                key={list.id}
+                {...list}
+                openModal={openModalHandler}
+                // addBookmark={addBookmarkHandler}
+                // removeBookmark={removeBookmarkHandler}
+              />
+            ))}
           </ul>
         </section>
         {isLoading ? "loading..." : <div ref={bottom}>TEST: BOTTOM AREA</div>}

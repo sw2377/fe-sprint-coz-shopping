@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
-import "./Main.css";
+import useFetch from "../hooks/useFetch";
 import ListItem from "../components/ListItem";
 import Modal from "../components/Modal";
+import "./Main.css";
 
-function Main({ productList, bookmark, setBookmark }) {
-  
+function Main({ bookmark, setBookmark }) {
+
+  const products = useFetch("http://cozshopping.codestates-seb.link/api/v1/products?count=4");
+
   // Modal Control
   const [isOpen, setIsOpen] = useState(false);
   const [modalData, setModalData] = useState({
@@ -43,7 +46,7 @@ function Main({ productList, bookmark, setBookmark }) {
       <section>
         <h2>상품 리스트</h2>
         <ul className="listItem">
-          {productList.slice(0, 4).map((list) => (
+          {products.map((list) => (
             <ListItem
               key={list.id}
               {...list}

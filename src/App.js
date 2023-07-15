@@ -9,19 +9,6 @@ import ProductList from './pages/ProductList';
 
 function App() {
 
-  const [productList, setProductList] = useState([]);
-
-  useEffect(() => {
-    console.log("API CALL")
-    getProductList();
-  }, []);
-
-  const getProductList = () => {
-    fetch("http://cozshopping.codestates-seb.link/api/v1/products")
-      .then((res) => res.json())
-      .then((data) => setProductList(data));
-  };
-
   const [bookmark, setBookmark] = useState([
     {
       "id": 84,
@@ -81,9 +68,9 @@ function App() {
     <div>
       <Header />
       <Routes>
-        <Route path='/' element={<Main productList={productList} bookmark={bookmark} setBookmark={setBookmark} />} />
-        <Route path='/products/list' element={<ProductList productList={productList} bookmark={bookmark} setBookmark={setBookmark} />} />
-        <Route path='/bookmark' element={<Bookmark bookmark={bookmark} />} />
+        <Route path='/' element={<Main bookmark={bookmark}/>} />
+        <Route path='/products/list' element={<ProductList />} />
+        <Route path='/bookmark' element={<Bookmark />} />
       </Routes>
       <Footer />
     </div>
