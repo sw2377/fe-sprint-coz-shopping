@@ -13,7 +13,7 @@ function Dropdown() {
           <Link to="/products/list">상품리스트 페이지</Link>
         </li>
         <li>
-          <Bookmark width="24" height="24" viewBox="-1 -1 31 31" stroke="black" stroke-width="1.5" />
+          <Bookmark width="24" height="24" viewBox="-1 -1 31 31" stroke="black" strokeWidth="1.5" />
           <Link to="/bookmark">북마크 페이지</Link>
         </li>
       </ul>
