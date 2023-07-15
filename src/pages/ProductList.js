@@ -1,20 +1,22 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { createPortal } from 'react-dom';
-import ListItem from '../components/ListItem';
-import Filter from '../components/Filter';
-import './ProductList.css';
-import Modal from '../components/Modal';
+import { useState, useEffect, useRef, useCallback } from "react";
+import { createPortal } from "react-dom";
+import ListItem from "../components/ListItem";
+import Filter from "../components/Filter";
+import "./ProductList.css";
+import Modal from "../components/Modal";
 
-function ProductList() {
-  const [productList, setProductList] = useState([]);
-  console.log("🚀 productList", productList);
+function ProductList({ productList, bookmark, setBookmark }) {
 
-  // Modal Control
-  const [isOpen, setIsOpen] = useState(false); 
+  // filter
+  const [filteredList, setFilteredList] = useState(productList);
+  const [type, setType] = useState("All");
+
+  // Modal
+  const [isOpen, setIsOpen] = useState(false);
   const [modalData, setModalData] = useState({
-    name: "", 
-    image: ""
-  })
+    name: "",
+    image: "",
+  });
 
   // infinite scroll
   const [currentProducts, setCurrentProducts] = useState([]);
@@ -24,64 +26,72 @@ function ProductList() {
   // loading
   const [isLoading, setIsLoading] = useState(true);
   // console.log("🚀 currentProducts", page, currentProducts );
-  
+
   useEffect(() => {
+    // console.log("USE EFFECT 1. productList");
+    setFilteredList(productList)
+  }, [productList])
+
+  useEffect(() => {
+    // console.log("USE EFFECT 2. filteredList");
+    setCurrentProducts(filteredList.slice(0, 10 * page));
+  }, [filteredList])
+
+  useEffect(() => {
+    // console.log("USE EFFECT 3. TYPE");
     getProductList();
-  }, []);
-  
-  // api call
-  const getProductList = (type = "All") => {
-    console.log("👀 API CALLED");
+  }, [type])
 
-    fetch('http://cozshopping.codestates-seb.link/api/v1/products')
-      .then((res) => res.json())
-      .then((data) => {
-
-        if (type === "All") {
-          setProductList(data);
-          setCurrentProducts(data.slice(0, 10 * page));
-        }
-
-        if (type !== "All") {
-          console.log("👀 카테고리 All 아님")
-          console.log("🚀 currentProducts", page, currentProducts );
-          const filteredData = data.filter((list) => list.type === type);
-          console.log("🛰️ filteredData", filteredData );
-          setPage(1);
-          setProductList(filteredData);
-          setCurrentProducts(filteredData.slice(0, 10 * page));
-          console.log("🚀 currentProducts", page, currentProducts );
-        }
-        
-        setIsLoading(false);
-      })
-  }
 
   // filter
-  const filterListHandler = (type) => {
-    console.log("🛰️ typeTest", type)
-    getProductList(type);
+  const getProductList = () => {
+    setFilteredList(productList);
+    
+    if (type === "All") {
+      // console.log("👀 카테고리 All");
+      setFilteredList(productList);
+      setCurrentProducts(filteredList.slice(0, 10 * page));
+    }
+  
+    if (type !== "All") {
+      // console.log("👀 카테고리 All 아님");
+      // console.log("🚀 currentProducts", page, currentProducts );
+      const filteredData = productList.filter((list) => list.type === type);
+      // console.log("🛰️ filteredData", filteredData );
+      setPage(1);
+      setFilteredList(filteredData);
+      setCurrentProducts(filteredList.slice(0, 10 * page));
+      // console.log("🚀 currentProducts", page, currentProducts );
+    }
+  
+    setIsLoading(false);
   }
+  
+  const ClickFilterHandler = (type) => {
+    // console.log("🛰️ typeTest", type)
+    setType(type);
+    getProductList();
+  };
 
   // infinite scroll
   const renderNextPage = useCallback(() => {
     setIsLoading(true);
-    
+
     if (page < 10) {
-      setCurrentProducts(productList.slice(0, 10 * (page + 1)));
+      setCurrentProducts(filteredList.slice(0, 10 * (page + 1)));
       setPage(page + 1);
     }
 
     setIsLoading(false);
-  }, [page, productList]);
+  }, [page, filteredList]);
 
   useEffect(() => {
     if (bottom.current) {
       const observer = new IntersectionObserver(
         (entries) => {
           if (entries[0].isIntersecting) {
-            console.log("🚀 entries", entries);
-            console.log("🚀 currentProducts", currentProducts);
+            // console.log("🚀 entries", entries);
+            // console.log("🚀 currentProducts", currentProducts);
             renderNextPage();
           }
         },
@@ -92,39 +102,60 @@ function ProductList() {
       observer.observe(bottom.current);
       return () => observer.disconnect();
     }
-  }, [renderNextPage]); 
-
+  }, [renderNextPage]);
 
   // Modal
-  const openModalHandler = ( image, brandImg, title, brandName ) => {
+  const openModalHandler = (image, brandImg, title, brandName) => {
     console.log("🚀 OPEN MODAL!", image, brandImg, title, brandName);
     setModalData({
       name: title || brandName,
-      image: image || brandImg
+      image: image || brandImg,
     });
     setIsOpen(true);
-  }
+  };
 
   const closeModalHandler = () => {
     setIsOpen(false);
-  }
+  };
+
+  // Bookmark
+  // const addBookmarkHandler = (star, targetId) => {
+  //   const bookmarkData = productList.filter((list) => list.id === targetId);
+  //   setBookmark((prev) => [...prev, bookmarkData[0]]);
+  // }
+
+  // const removeBookmarkHandler = (star, targetId) => {
+  //   const bookmarkData = bookmark.filter((list) => list.id !== targetId);
+  //   setBookmark(bookmarkData);
+  // }
+
 
   return (
     <>
       <main>
-        <Filter onFilter={filterListHandler} />
+        <Filter onFilter={ClickFilterHandler} />
         <section>
           <ul className="listItem">
-            { currentProducts.map((list) => <ListItem key={list.id} {...list} openModal={openModalHandler} /> ) }
+            { currentProducts.map((list) => (
+                <ListItem
+                  key={list.id}
+                  {...list}
+                  openModal={openModalHandler}
+                  // addBookmark={addBookmarkHandler}
+                  // removeBookmark={removeBookmarkHandler}
+                />
+              )) }
           </ul>
         </section>
-        { isLoading ? 'loading...' : <div ref={bottom}>TEST: BOTTOM AREA</div>}
-        { isOpen && createPortal(
-          <Modal modalData={modalData} closeModal={closeModalHandler} />, document.getElementById("modal")
-        ) }
+        {isLoading ? "loading..." : <div ref={bottom}>TEST: BOTTOM AREA</div>}
+        {isOpen &&
+          createPortal(
+            <Modal modalData={modalData} closeModal={closeModalHandler} />,
+            document.getElementById("modal")
+          )}
       </main>
     </>
-  )
+  );
 }
 
 export default ProductList;

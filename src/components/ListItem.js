@@ -1,14 +1,34 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './ListItem.css';
 import { ReactComponent as Bookmark } from '../assets/icons/bookmarkIcon.svg';
 
-function ListItem( { openModal, ...list} ) {
+function ListItem( { openModal, addBookmark, removeBookmark, ...list} ) {
   
-  const [bookmark, setBookmark] = useState(false);
+  const [star, setStar] = useState(false);
+  
 
+  // Modal
   const openModalHandler = ( image, brandImg, title, brandName ) => {
     // console.log("🚀 OPEN MODAL", image, brandImg, title, brandName )
     openModal(image, brandImg, title, brandName);
+  }
+
+  // Bookmark
+  // useEffect(() => {
+  //   // console.log(star);
+
+  //   if (star) {
+  //     addBookmark(star, list.id)
+  //   } 
+  //   else {
+  //     removeBookmark(star, list.id)
+  //   }
+
+  // }, [star])
+
+  const clickBookmarkHandler = (e) => {
+    e.stopPropagation();
+    setStar(!star);
   }
 
   return (
@@ -18,13 +38,15 @@ function ListItem( { openModal, ...list} ) {
         style={{ backgroundImage: list.type === "Brand" ? `url("${list.brand_image_url}")` : `url("${list.image_url}")` }}
       >
         {/* bookmark */}
-        <div className="bookmark_icon" onClick={() => setBookmark(!bookmark)}>
+        <div className="bookmark_icon" onClick={clickBookmarkHandler}>
           <Bookmark 
             width="24" 
             height="24" 
             viewBox="0 0 24 24" 
-            fillOpacity={ bookmark ? "1" : "0.8" } 
-            fill={ bookmark ? "#FFD361" : "#DFDFDF" } 
+            fillOpacity={ star ? "1" : "0.8" } 
+            fill={ star ? "#FFD361" : "#DFDFDF" } 
+            // fillOpacity="0.8"
+            // fill="#DFDFDF"
           />
         </div>
         {/* <img src={list.image_url} alt="" /> */}
