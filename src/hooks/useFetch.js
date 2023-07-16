@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 
 const useFetch = (url) => {
-  const [data, setData] = useState([]);
+  
+  const [myData, setMyData] = useState([]);
 
   useEffect(() => {
     getProducts();
@@ -10,10 +11,13 @@ const useFetch = (url) => {
   const getProducts = () => {
     fetch(url)
       .then((res) => res.json())
-      .then((data) => setData(data))
+      .then((data) => {
+        const addIsBookmark = data.map((list) => list = { ...list, isBookmark: false })
+        return setMyData(addIsBookmark)
+      })
   };
 
-  return data;
+  return myData;
 }
 
 export default useFetch;

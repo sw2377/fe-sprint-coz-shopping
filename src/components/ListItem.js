@@ -1,34 +1,27 @@
 import { useState, useEffect } from 'react';
-import './ListItem.css';
 import { ReactComponent as Bookmark } from '../assets/icons/bookmarkIcon.svg';
+import './ListItem.css';
 
-function ListItem( { openModal, addBookmark, removeBookmark, ...list} ) {
+function ListItem( { openModal, bookmarkHandler, ...list} ) {
   
-  const [star, setStar] = useState(false);
+  const [star, setStar] = useState(list.isBookmark);
   
-
   // Modal
   const openModalHandler = ( image, brandImg, title, brandName ) => {
     // console.log("🚀 OPEN MODAL", image, brandImg, title, brandName )
     openModal(image, brandImg, title, brandName);
   }
 
-  // Bookmark
-  // useEffect(() => {
-  //   // console.log(star);
+  useEffect(() => {
+    console.log("USE EFFECT STAR", star)
+  }, [star])
 
-  //   if (star) {
-  //     addBookmark(star, list.id)
-  //   } 
-  //   else {
-  //     removeBookmark(star, list.id)
-  //   }
-
-  // }, [star])
-
+  // bookmark
   const clickBookmarkHandler = (e) => {
     e.stopPropagation();
-    setStar(!star);
+    setStar((star) => !star);
+
+    bookmarkHandler(list.id);
   }
 
   return (
@@ -49,7 +42,6 @@ function ListItem( { openModal, addBookmark, removeBookmark, ...list} ) {
             // fill="#DFDFDF"
           />
         </div>
-        {/* <img src={list.image_url} alt="" /> */}
       </div>
       
       {/* type별 조건부 렌더링 */}
