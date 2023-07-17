@@ -11,7 +11,7 @@ function ProductList() {
   const products = useFetch("http://cozshopping.codestates-seb.link/api/v1/products");
 
   const [listProducts, setListProducts] = useState([]);
-  console.log("product list page", listProducts)
+  // console.log("product list page", listProducts)
 
   useEffect(() => {
     // bookmark와 products를 비교해서 같은 값은 isBookmark: true로 설정한 후 listProducts로 set한다.
@@ -152,14 +152,16 @@ function ProductList() {
   }, [renderNextPage]);
 
   // Modal
-  const openModalHandler = (image, brandImg, title, brandName) => {
-    console.log("🚀 OPEN MODAL!", image, brandImg, title, brandName);
+  const openModalHandler = (image, brandImg, title, brandName, isBookmark) => {
+    // console.log("🚀 OPEN MODAL!", image, brandImg, title, brandName, isBookmark);
     setModalData({
       name: title || brandName,
       image: image || brandImg,
+      isBookmark: isBookmark
     });
     setIsOpen(true);
   };
+
 
   const closeModalHandler = () => {
     setIsOpen(false);
@@ -172,7 +174,7 @@ function ProductList() {
       return product.id === targetId ? { ...product, isBookmark: !product.isBookmark } : product
     })
     setListProducts(setIsBookmark);
-    console.log(listProducts)
+    // console.log(listProducts)
   }
 
   const bookmarkHandler = (targetId) => {

@@ -7,9 +7,8 @@ function ListItem( { openModal, bookmarkHandler, ...list} ) {
   const [star, setStar] = useState(list.isBookmark);
   
   // Modal
-  const openModalHandler = ( image, brandImg, title, brandName ) => {
-    // console.log("🚀 OPEN MODAL", image, brandImg, title, brandName )
-    openModal(image, brandImg, title, brandName);
+  const openModalHandler = ( image, brandImg, title, brandName, isBookmark ) => {
+    openModal(image, brandImg, title, brandName, isBookmark);
   }
 
   useEffect(() => {
@@ -25,7 +24,7 @@ function ListItem( { openModal, bookmarkHandler, ...list} ) {
   }
 
   return (
-    <li onClick={() => openModalHandler(list.image_url, list.brand_image_url, list.title, list.brand_name)}>
+    <li onClick={() => openModalHandler(list.image_url, list.brand_image_url, list.title, list.brand_name, list.isBookmark)}>
       <div 
         className="img" 
         style={{ backgroundImage: list.type === "Brand" ? `url("${list.brand_image_url}")` : `url("${list.image_url}")` }}

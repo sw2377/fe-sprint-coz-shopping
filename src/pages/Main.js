@@ -111,14 +111,16 @@ function Main() {
   const [modalData, setModalData] = useState({
     name: "",
     image: "",
+    isBookmark: false
   });
 
 
-  const openModalHandler = (image, brandImg, title, brandName) => {
-    console.log("🚀 OPEN MODAL!", image, brandImg, title, brandName);
+  const openModalHandler = (image, brandImg, title, brandName, isBookmark) => {
+    // console.log("🚀 OPEN MODAL!", image, brandImg, title, brandName, isBookmark);
     setModalData({
       name: title || brandName,
       image: image || brandImg,
+      isBookmark: isBookmark
     });
     setIsOpen(true);
   };
