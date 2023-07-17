@@ -10,40 +10,57 @@ function Main() {
   const products = useFetch("http://cozshopping.codestates-seb.link/api/v1/products?count=4");
 
   const [mainProducts, setMainProducts] = useState([]);
-  // console.log("main products", mainProducts)
-
+  
   useEffect(() => {
+    // bookmark와 products를 비교해서 같은 값은 isBookmark: true로 설정한 후 mainProducts로 set한다.
+    // bookmark state의 id와 mainProducts의 id가 같은걸 찾고,
+    // mainProducts의 isBookmark: true로 바꾼다.
+    if (products.length > 0 && bookmark.length > 0) {
+      // console.log("products", products, "bookmark", bookmark)
+  
+      for (let i=0; i<bookmark.length; i++) {
+        for (let j=0; j<products.length; j++) {
+          if (bookmark[i].id === products[j].id) {
+            // console.log(products[j])
+            products[j] = { ...products[j], isBookmark: true }
+            // console.log(products[j])
+          }
+        }
+      }
+    } 
+
     setMainProducts(products)
   }, [products])
 
   // bookmark
   const [bookmark, setBookmark] = useState([]);
 
-  // localStorage bookmark 확인
+  // 최초 렌더링시 localStorage bookmark 확인
+  // 로컬스토리지에 bookmark가 있으면, bookmark state에 set한다.
   useEffect(() => {
+    
     if (localStorage.getItem("bookmark")) {
       setBookmark(JSON.parse(localStorage.getItem("bookmark")))
     }
   }, [])
 
   useEffect(() => {
-    console.log("bookmark", bookmark);
+    // console.log("bookmark", bookmark);
 
     if (bookmark.length > 0) {
       localStorage.setItem("bookmark", JSON.stringify(bookmark))
     } else {
       localStorage.removeItem("bookmark")
     }
-
+    
   }, [bookmark])
-
 
   const isBookmarkHandler = (targetId) => {
     const setIsBookmark = mainProducts.map((product) => {      
       return product.id === targetId ? { ...product, isBookmark: !product.isBookmark } : product
     })
     setMainProducts(setIsBookmark);
-    console.log(mainProducts)
+    // console.log(mainProducts)
   }
 
   const bookmarkHandler = (targetId) => {
@@ -76,7 +93,7 @@ function Main() {
       })
       .filter(((product) => product.id === targetId))[0]
 
-    console.log("target", target)
+    // console.log("target", target)
     setBookmark((prev) => [...prev, target]);
   }
 

@@ -16,17 +16,16 @@ function Bookmark() {
     }
   }, [])
 
-  // useEffect(() => {
-  //   console.log("bookmark", bookmark);
+  useEffect(() => {
+    console.log("bookmark", bookmark);
 
-  //   // if (bookmark.length > 0) {
-  //   //   localStorage.setItem("bookmark", JSON.stringify(bookmark))
-  //   // } else {
-  //   //   localStorage.removeItem("bookmark")
-  //   // }
+    if (bookmark.length > 0) {
+      localStorage.setItem("bookmark", JSON.stringify(bookmark))
+    } else {
+      localStorage.removeItem("bookmark")
+    }
 
-  // }, [bookmark])
-
+  }, [bookmark])
 
   // filter
   const [filteredList, setFilteredList] = useState(bookmark);
@@ -138,6 +137,40 @@ function Bookmark() {
     setIsOpen(false);
   };
 
+  // bookmark
+
+  // const isBookmarkHandler = (targetId) => {
+  //   const setIsBookmark = mainProducts.map((product) => {      
+  //     return product.id === targetId ? { ...product, isBookmark: !product.isBookmark } : product
+  //   })
+  //   setMainProducts(setIsBookmark);
+  //   console.log(mainProducts)
+  // }
+
+  const bookmarkHandler = (targetId) => {
+    // console.log("targetId", targetId)
+
+    // isBookmark handler (isBookmark가 true면 false로, false면 true로.)
+    // 필요한 코드인가..?
+    // isBookmarkHandler(targetId)
+   
+
+    if (bookmark.find((list) => list.id === targetId)) {
+      // console.log("북마크에 이미 있는 항목으로 북마크에서 제거", targetId)
+      removeBookmark(targetId)
+    }
+  }
+
+  const removeBookmark = (targetId) => {
+    // bookmark를 돌며 targetId와 id가 같지 않은 값들만 모아서
+    // bookmark를 다시 생성한다.
+    const target = bookmark.filter((product) => product.id !== targetId);
+    console.log("target", target)
+    setBookmark(target)
+
+  }
+  
+
 
   return (
     <>
@@ -150,6 +183,7 @@ function Bookmark() {
                 key={list.id}
                 {...list}
                 openModal={openModalHandler}
+                bookmarkHandler={bookmarkHandler}
               />
             )) }
           </ul>

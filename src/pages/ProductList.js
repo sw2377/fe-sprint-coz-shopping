@@ -10,6 +10,34 @@ function ProductList() {
 
   const products = useFetch("http://cozshopping.codestates-seb.link/api/v1/products");
 
+  const [listProducts, setListProducts] = useState([]);
+  // console.log("main products", mainProducts)
+
+  useEffect(() => {
+    setListProducts(products)
+  }, [products])
+
+  // bookmark
+  const [bookmark, setBookmark] = useState([]);
+
+  // localStorage bookmark 확인
+  useEffect(() => {
+    if (localStorage.getItem("bookmark")) {
+      setBookmark(JSON.parse(localStorage.getItem("bookmark")))
+    }
+  }, [])
+
+  useEffect(() => {
+    console.log("bookmark", bookmark);
+
+    if (bookmark.length > 0) {
+      localStorage.setItem("bookmark", JSON.stringify(bookmark))
+    } else {
+      localStorage.removeItem("bookmark")
+    }
+  
+  }, [bookmark])
+
   // filter
   const [filteredList, setFilteredList] = useState(products);
   const [type, setType] = useState("All");
@@ -120,6 +148,60 @@ function ProductList() {
     setIsOpen(false);
   };
 
+
+  // bookmark
+  const isBookmarkHandler = (targetId) => {
+    const setIsBookmark = listProducts.map((product) => {      
+      return product.id === targetId ? { ...product, isBookmark: !product.isBookmark } : product
+    })
+    setListProducts(setIsBookmark);
+    console.log(listProducts)
+  }
+
+  const bookmarkHandler = (targetId) => {
+    // console.log("targetId", targetId)
+
+    // isBookmark handler (isBookmark가 true면 false로, false면 true로.)
+    // 필요한 코드인가..?
+    isBookmarkHandler(targetId)
+   
+
+    if (bookmark.find((list) => list.id === targetId)) {
+      // console.log("북마크에 이미 있는 항목으로 북마크에서 제거", targetId)
+      removeBookmark(targetId)
+    } else {
+      // console.log("북마크에 없는 항목으로 북마크에 추가", targetId)
+      addBookmark(targetId)
+    }
+  }
+
+  const addBookmark = (targetId) => {
+    // mainProducts를 돌며 targetId와 id가 같은 값을 찾고
+    // mainProducts.isBookmark를 true로 바꾸고,
+    // bookmark에 넣는다.
+
+
+    // const target = mainProducts.filter((product) => product.id === targetId)[0];
+    const target = listProducts
+      .map((product) => {
+        return product.id === targetId ? { ...product, isBookmark: true } : product
+      })
+      .filter(((product) => product.id === targetId))[0]
+
+    console.log("target", target)
+    setBookmark((prev) => [...prev, target]);
+  }
+
+  const removeBookmark = (targetId) => {
+    // bookmark를 돌며 targetId와 id가 같지 않은 값들만 모아서
+    // bookmark를 다시 생성한다.
+    const target = bookmark.filter((product) => product.id !== targetId);
+    console.log("target", target)
+    setBookmark(target)
+
+  }
+  
+
   return (
     <>
       <main>
@@ -131,6 +213,7 @@ function ProductList() {
                 key={list.id}
                 {...list}
                 openModal={openModalHandler}
+                bookmarkHandler={bookmarkHandler}
               />
             ))}
           </ul>
