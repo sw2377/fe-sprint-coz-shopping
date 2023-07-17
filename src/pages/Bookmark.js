@@ -1,42 +1,31 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { createPortal } from "react-dom";
+import { useState, useEffect, useRef, useCallback } from "react";
 import ListItem from "../components/ListItem";
 import Filter from "../components/Filter";
-import Modal from "../components/Modal";
 
 function Bookmark() {
-
   // bookmark
   const [bookmark, setBookmark] = useState([]);
 
   // localStorage bookmark 확인
   useEffect(() => {
     if (localStorage.getItem("bookmark")) {
-      setBookmark(JSON.parse(localStorage.getItem("bookmark")))
+      setBookmark(JSON.parse(localStorage.getItem("bookmark")));
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     console.log("bookmark", bookmark);
 
     if (bookmark.length > 0) {
-      localStorage.setItem("bookmark", JSON.stringify(bookmark))
+      localStorage.setItem("bookmark", JSON.stringify(bookmark));
     } else {
-      localStorage.removeItem("bookmark")
+      localStorage.removeItem("bookmark");
     }
-
-  }, [bookmark])
+  }, [bookmark]);
 
   // filter
   const [filteredList, setFilteredList] = useState(bookmark);
   const [type, setType] = useState("All");
-
-  // Modal
-  const [isOpen, setIsOpen] = useState(false);
-  const [modalData, setModalData] = useState({
-    name: "",
-    image: "",
-  });
 
   // infinite scroll
   const [currentProducts, setCurrentProducts] = useState([]);
@@ -123,24 +112,10 @@ function Bookmark() {
     }
   }, [renderNextPage]);
 
-  // Modal
-  const openModalHandler = (image, brandImg, title, brandName) => {
-    console.log("🚀 OPEN MODAL!", image, brandImg, title, brandName);
-    setModalData({
-      name: title || brandName,
-      image: image || brandImg,
-    });
-    setIsOpen(true);
-  };
-
-  const closeModalHandler = () => {
-    setIsOpen(false);
-  };
-
   // bookmark
 
   // const isBookmarkHandler = (targetId) => {
-  //   const setIsBookmark = mainProducts.map((product) => {      
+  //   const setIsBookmark = mainProducts.map((product) => {
   //     return product.id === targetId ? { ...product, isBookmark: !product.isBookmark } : product
   //   })
   //   setMainProducts(setIsBookmark);
@@ -153,50 +128,40 @@ function Bookmark() {
     // isBookmark handler (isBookmark가 true면 false로, false면 true로.)
     // 필요한 코드인가..?
     // isBookmarkHandler(targetId)
-   
 
     if (bookmark.find((list) => list.id === targetId)) {
       // console.log("북마크에 이미 있는 항목으로 북마크에서 제거", targetId)
-      removeBookmark(targetId)
+      removeBookmark(targetId);
     }
-  }
+  };
 
   const removeBookmark = (targetId) => {
     // bookmark를 돌며 targetId와 id가 같지 않은 값들만 모아서
     // bookmark를 다시 생성한다.
     const target = bookmark.filter((product) => product.id !== targetId);
-    console.log("target", target)
-    setBookmark(target)
-
-  }
-  
-
+    console.log("target", target);
+    setBookmark(target);
+  };
 
   return (
     <>
       <main>
-        <Filter onFilter={ClickFilterHandler}/>
+        <Filter onFilter={ClickFilterHandler} />
         <section>
           <ul className="listItem">
-            { currentProducts.map((list) => (
+            {currentProducts.map((list) => (
               <ListItem
                 key={list.id}
                 {...list}
-                openModal={openModalHandler}
                 bookmarkHandler={bookmarkHandler}
               />
-            )) }
+            ))}
           </ul>
         </section>
-        {isLoading ? "loading..." : <div ref={bottom}>TEST: BOTTOM AREA</div>}
-        {isOpen &&
-          createPortal(
-            <Modal modalData={modalData} closeModal={closeModalHandler} />,
-            document.getElementById("modal")
-          )}
+        {isLoading ? "loading..." : <div ref={bottom}></div>}
       </main>
     </>
-  )
+  );
 }
 
 export default Bookmark;
