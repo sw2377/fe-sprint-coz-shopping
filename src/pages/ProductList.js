@@ -11,9 +11,26 @@ function ProductList() {
   const products = useFetch("http://cozshopping.codestates-seb.link/api/v1/products");
 
   const [listProducts, setListProducts] = useState([]);
-  // console.log("main products", mainProducts)
+  console.log("product list page", listProducts)
 
   useEffect(() => {
+    // bookmark와 products를 비교해서 같은 값은 isBookmark: true로 설정한 후 listProducts로 set한다.
+    // bookmark state의 id와 listProducts의 id가 같은걸 찾고,
+    // listProducts의 isBookmark: true로 바꾼다.
+    if (products.length > 0 && bookmark.length > 0) {
+      // console.log("products", products, "bookmark", bookmark)
+  
+      for (let i=0; i<bookmark.length; i++) {
+        for (let j=0; j<products.length; j++) {
+          if (bookmark[i].id === products[j].id) {
+            // console.log(products[j])
+            products[j] = { ...products[j], isBookmark: true }
+            // console.log(products[j])
+          }
+        }
+      }
+    } 
+
     setListProducts(products)
   }, [products])
 
