@@ -13,7 +13,7 @@ function ListItem( { openModal, bookmarkHandler, ...list} ) {
   }
 
   useEffect(() => {
-    console.log("USE EFFECT STAR", star)
+    // console.log("USE EFFECT STAR", star)
   }, [star])
 
   // bookmark

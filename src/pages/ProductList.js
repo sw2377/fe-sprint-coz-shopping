@@ -120,17 +120,6 @@ function ProductList() {
     setIsOpen(false);
   };
 
-  // Bookmark
-  // const addBookmarkHandler = (star, targetId) => {
-  //   const bookmarkData = productList.filter((list) => list.id === targetId);
-  //   setBookmark((prev) => [...prev, bookmarkData[0]]);
-  // }
-
-  // const removeBookmarkHandler = (star, targetId) => {
-  //   const bookmarkData = bookmark.filter((list) => list.id !== targetId);
-  //   setBookmark(bookmarkData);
-  // }
-
   return (
     <>
       <main>
@@ -142,8 +131,6 @@ function ProductList() {
                 key={list.id}
                 {...list}
                 openModal={openModalHandler}
-                // addBookmark={addBookmarkHandler}
-                // removeBookmark={removeBookmarkHandler}
               />
             ))}
           </ul>

@@ -10,7 +10,7 @@ function Main() {
   const products = useFetch("http://cozshopping.codestates-seb.link/api/v1/products?count=4");
 
   const [mainProducts, setMainProducts] = useState([]);
-  console.log("main products", mainProducts)
+  // console.log("main products", mainProducts)
 
   useEffect(() => {
     setMainProducts(products)
