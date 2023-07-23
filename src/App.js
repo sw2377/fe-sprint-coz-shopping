@@ -7,7 +7,6 @@ import ProductList from './pages/ProductList';
 import Bookmark from './pages/Bookmark';
 
 function App() {
- 
   return (
     <div>
       <Header />

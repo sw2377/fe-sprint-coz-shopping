@@ -19,7 +19,7 @@ function Header() {
           </Link>
         </h1>
         <Menubar className="menubar" onClick={() => setIsOpen(!isOpen)} />
-        { isOpen && <Dropdown /> }
+        { isOpen && <Dropdown isOpen={isOpen} setIsOpen={setIsOpen}/> }
       </div>
     </header>
   )

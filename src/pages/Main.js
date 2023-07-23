@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import useFetch from "../hooks/useFetch";
 import ListItem from "../components/ListItem";
 import "./Main.css";
-import Toast from "../components/Toast";
 
 function Main() {
   const products = useFetch(

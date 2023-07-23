@@ -43,8 +43,22 @@ function ListItem({ openModal, bookmarkHandler, ...list }) {
     bookmarkHandler(list.id);
 
     // toast
-    setToastList([...toastList, toastProperties]);
+    // setToastList([...toastList, toastProperties]);
+
+    setToastList((prev) => [
+      ...prev,
+      { id: parseInt(Math.random() * 100) },
+    ]);
     setIsToastShow(true);
+  };
+
+  const handleToast = (id, time) => {
+    const timeoutId = setTimeout(() => {
+      setToastList((prevToasts) => {
+        return prevToasts.filter((el) => el.id !== id);
+      });
+    }, time);
+    return timeoutId;
   };
 
   return (
@@ -130,6 +144,7 @@ function ListItem({ openModal, bookmarkHandler, ...list }) {
             setToastList={setToastList}
             setIsToastShow={setIsToastShow}
             star={star}
+            deleteToast={(type) => handleToast(toastList.id, type)}
           />,
           document.getElementById("toast-root")
         )}
